@@ -6,7 +6,7 @@ import type {
   JobCreationResponse,
 } from "../types";
 
-const API_BASE = "https://atrai-backend.vercel.app/api";
+const API_BASE = "https://atrai-backend.vercel.app";
 
 export async function sendMessage(
   message: string,
