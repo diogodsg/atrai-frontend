@@ -246,7 +246,7 @@ export function ProfileCard({
           )}
         </div>
 
-        {/* Reason Input - aparece após dar feedback */}
+        {/* Reason Input - sempre aparece após dar feedback */}
         {feedbackGiven && (
           <div className="mt-3">
             <input
@@ -257,6 +257,7 @@ export function ProfileCard({
                 feedbackGiven === "like" ? "interessante" : "não interessante"
               }? (opcional)`}
               className="w-full px-3 py-2 bg-[#1a1a1a] border border-[#3d3d3d] rounded-lg text-sm text-[#f5f5f5] placeholder-[#707070] outline-none focus:border-[#4d4d4d]"
+              autoFocus
             />
             {reason && (
               <p className="mt-1 text-xs text-[#707070]">

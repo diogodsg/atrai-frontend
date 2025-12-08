@@ -60,6 +60,12 @@ export function JobCreation({ onJobCreated, onCancel }: JobCreationProps) {
   const [jobData, setJobData] = useState<JobData>({});
   const [isComplete, setIsComplete] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+  const [isJobCreated, setIsJobCreated] = useState(false);
+  const [createdJobData, setCreatedJobData] = useState<{
+    job: JobData;
+    searchQuery: string;
+    clickUpUrl?: string;
+  } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -93,6 +99,38 @@ export function JobCreation({ onJobCreated, onCancel }: JobCreationProps) {
     };
 
     setMessages((prev) => [...prev, userMessage]);
+
+    // Se a vaga já foi criada e o usuário quer buscar candidatos
+    if (isJobCreated && createdJobData) {
+      const searchTriggers = [
+        "buscar candidatos",
+        "buscar",
+        "começar busca",
+        "procurar",
+        "encontrar candidatos",
+        "iniciar busca",
+      ];
+      
+      if (searchTriggers.some((trigger) => content.toLowerCase().includes(trigger))) {
+        const finalMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          role: "assistant",
+          content: "🚀 Perfeito! Vou iniciar a busca de candidatos agora...",
+          timestamp: new Date(),
+        };
+        setMessages((prev) => [...prev, finalMessage]);
+
+        setTimeout(() => {
+          onJobCreated(
+            createdJobData.job,
+            createdJobData.searchQuery,
+            createdJobData.clickUpUrl
+          );
+        }, 1500);
+        return;
+      }
+    }
+
     setIsLoading(true);
 
     try {
@@ -117,6 +155,14 @@ export function JobCreation({ onJobCreated, onCancel }: JobCreationProps) {
       setMessages((prev) => [...prev, assistantMessage]);
       setJobData(response.currentJobData);
       setIsComplete(response.isComplete);
+      
+      // Se a vaga já foi criada, atualiza os dados
+      if (isJobCreated && createdJobData) {
+        setCreatedJobData({
+          ...createdJobData,
+          job: response.currentJobData,
+        });
+      }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Erro ao processar mensagem"
@@ -141,22 +187,20 @@ export function JobCreation({ onJobCreated, onCancel }: JobCreationProps) {
           response.clickUpListUrl
             ? `📋 Lista no ClickUp: ${response.clickUpListUrl}\n\n`
             : ""
-        }Agora vou te ajudar a buscar candidatos para essa posição.`,
+        }💬 Quer fazer algum ajuste na vaga antes de buscar candidatos?\n\nVocê pode:\n• Modificar qualquer informação (salário, formato, etc)\n• Adicionar mais detalhes\n• Ou digitar "buscar candidatos" para começar a busca`,
         timestamp: new Date(),
       };
 
       setMessages((prev) => [...prev, successMessage]);
-
-      // Espera um pouco para o usuário ver a mensagem
-      setTimeout(() => {
-        onJobCreated(
-          response.job as JobData,
-          response.searchQuery,
-          response.clickUpListUrl
-        );
-      }, 2000);
+      setIsJobCreated(true);
+      setCreatedJobData({
+        job: response.job as JobData,
+        searchQuery: response.searchQuery,
+        clickUpUrl: response.clickUpListUrl,
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro ao criar vaga");
+    } finally {
       setIsCreating(false);
     }
   };
@@ -256,8 +300,8 @@ export function JobCreation({ onJobCreated, onCancel }: JobCreationProps) {
         )}
 
         {/* Action */}
-        <div className="p-4 mt-auto border-t border-[#2d2d2d]">
-          {isComplete && !isCreating && (
+        <div className="p-4 mt-auto border-t border-[#2d2d2d] space-y-2">
+          {isComplete && !isJobCreated && !isCreating && (
             <button
               onClick={handleCreateJob}
               className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium transition-colors"
@@ -273,6 +317,27 @@ export function JobCreation({ onJobCreated, onCancel }: JobCreationProps) {
               <Loader2 className="w-4 h-4 text-[#e07a4f] animate-spin" />
               <span className="text-sm text-[#a0a0a0]">Criando...</span>
             </div>
+          )}
+
+          {isJobCreated && createdJobData && (
+            <>
+              <button
+                onClick={() => {
+                  onJobCreated(
+                    createdJobData.job,
+                    createdJobData.searchQuery,
+                    createdJobData.clickUpUrl
+                  );
+                }}
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#e07a4f] hover:bg-[#c96a42] text-white rounded-lg text-sm font-medium transition-colors"
+              >
+                <ArrowRight className="w-4 h-4" />
+                Buscar Candidatos
+              </button>
+              <p className="text-xs text-center text-[#707070]">
+                Ou faça ajustes no chat acima
+              </p>
+            </>
           )}
         </div>
       </aside>
@@ -340,7 +405,7 @@ export function JobCreation({ onJobCreated, onCancel }: JobCreationProps) {
         </div>
 
         {/* Input */}
-        {!isComplete && !isCreating && (
+        {!isCreating && (
           <div className="border-t border-[#2d2d2d] p-4">
             <div className="max-w-3xl mx-auto">
               <form
@@ -355,7 +420,11 @@ export function JobCreation({ onJobCreated, onCancel }: JobCreationProps) {
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="Responda às perguntas sobre a vaga..."
+                  placeholder={
+                    isJobCreated
+                      ? 'Digite "buscar candidatos" ou faça ajustes na vaga...'
+                      : "Responda às perguntas sobre a vaga..."
+                  }
                   className="flex-1 bg-[#252525] border border-[#3d3d3d] rounded-xl px-4 py-3 text-[#f5f5f5] placeholder-[#505050] focus:outline-none focus:border-[#e07a4f] transition-colors"
                   disabled={isLoading}
                 />

@@ -58,15 +58,12 @@ function CompactProfileCard({
     if (feedback?.interesting === interesting) {
       onFeedback(profile.profile_id, null);
       setShowReasonInput(false);
+      setReason("");
       return;
     }
 
     onFeedback(profile.profile_id, interesting);
-    if (interesting) {
-      setShowReasonInput(true);
-    } else {
-      setShowReasonInput(false);
-    }
+    setShowReasonInput(true);
   };
 
   const handleReasonSubmit = () => {
@@ -152,7 +149,7 @@ function CompactProfileCard({
             <ThumbsDown className="w-4 h-4" />
           </button>
           <a
-            href={profile.profile_url}
+            href={profile.profile_url.startsWith('http') ? profile.profile_url : `https://${profile.profile_url}`}
             target="_blank"
             rel="noopener noreferrer"
             className="p-1.5 rounded-lg text-[#505050] hover:text-[#a0a0a0] hover:bg-[#3d3d3d] transition-colors"
@@ -163,17 +160,18 @@ function CompactProfileCard({
         </div>
       </div>
 
-      {/* Reason input */}
-      {showReasonInput && (
+      {/* Reason input - mostra sempre que há feedback */}
+      {feedback && showReasonInput && (
         <div className="px-3 pb-3">
           <div className="flex items-center gap-2">
             <input
               type="text"
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              placeholder="Por que esse perfil é interessante? (opcional)"
+              placeholder={`Por que esse perfil é ${feedback.interesting ? 'interessante' : 'não interessante'}? (opcional)`}
               className="flex-1 bg-[#1a1a1a] border border-[#3d3d3d] rounded-lg px-3 py-1.5 text-sm text-[#f5f5f5] placeholder-[#505050] focus:outline-none focus:border-green-500/50"
               onKeyDown={(e) => e.key === "Enter" && handleReasonSubmit()}
+              autoFocus
             />
             <button
               onClick={handleReasonSubmit}
@@ -185,12 +183,21 @@ function CompactProfileCard({
         </div>
       )}
 
-      {/* Show saved reason */}
+      {/* Show saved reason com botão para editar */}
       {feedback?.reason && !showReasonInput && (
         <div className="px-3 pb-3">
-          <p className="text-xs text-green-400/70 bg-green-500/10 rounded px-2 py-1">
-            💡 {feedback.reason}
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="flex-1 text-xs text-green-400/70 bg-green-500/10 rounded px-2 py-1">
+              💡 {feedback.reason}
+            </p>
+            <button
+              onClick={() => setShowReasonInput(true)}
+              className="p-1 text-[#505050] hover:text-[#a0a0a0] rounded"
+              title="Editar motivo"
+            >
+              <span className="text-xs">✏️</span>
+            </button>
+          </div>
         </div>
       )}
     </div>
@@ -461,32 +468,73 @@ export function ChatV2({
         )}
 
         {/* Stats */}
-        <div className="p-4 border-b border-[#2d2d2d]">
+        <div className="p-4 border-b border-[#2d2d2d] max-h-[50vh] overflow-y-auto">
           <div className="flex items-center gap-2 mb-3">
             <Users className="w-4 h-4 text-[#707070]" />
             <span className="text-xs text-[#707070] uppercase tracking-wider">
-              Candidatos
+              Avaliação
             </span>
           </div>
-          <div className="grid grid-cols-3 gap-2 text-center">
-            <div className="bg-[#252525] rounded-lg p-2">
-              <p className="text-lg font-semibold text-[#f5f5f5]">
-                {allProfiles.length}
-              </p>
-              <p className="text-[10px] text-[#707070]">Total</p>
+          <div className="space-y-3">
+            {/* Total */}
+            <div className="p-2 bg-[#252525] rounded-lg">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-xs text-[#a0a0a0]">Total encontrados</span>
+                <span className="text-sm font-semibold text-[#f5f5f5]">
+                  {allProfiles.length}
+                </span>
+              </div>
             </div>
-            <div className="bg-green-500/10 rounded-lg p-2">
-              <p className="text-lg font-semibold text-green-400">
-                {interestingProfiles.length}
-              </p>
-              <p className="text-[10px] text-green-400/70">Sim</p>
+            
+            {/* Atendem à vaga */}
+            <div className="p-2 bg-green-500/10 rounded-lg border border-green-500/20">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs text-green-400/90 font-medium">Atendem à vaga</span>
+                <span className="text-sm font-semibold text-green-400">
+                  {interestingProfiles.length}
+                </span>
+              </div>
+              {interestingProfiles.length > 0 && (
+                <div className="space-y-1">
+                  {interestingProfiles.map((profile) => (
+                    <div key={profile.profile_id} className="text-[11px] text-green-400/70 truncate">
+                      • {profile.full_name}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-            <div className="bg-red-500/10 rounded-lg p-2">
-              <p className="text-lg font-semibold text-red-400">
-                {notInterestingProfiles.length}
-              </p>
-              <p className="text-[10px] text-red-400/70">Não</p>
+            
+            {/* Não atendem */}
+            <div className="p-2 bg-red-500/10 rounded-lg border border-red-500/20">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs text-red-400/90 font-medium">Não atendem</span>
+                <span className="text-sm font-semibold text-red-400">
+                  {notInterestingProfiles.length}
+                </span>
+              </div>
+              {notInterestingProfiles.length > 0 && (
+                <div className="space-y-1">
+                  {notInterestingProfiles.map((profile) => (
+                    <div key={profile.profile_id} className="text-[11px] text-red-400/70 truncate line-through opacity-60">
+                      • {profile.full_name}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
+            
+            {/* Não avaliados */}
+            {allProfiles.length > (interestingProfiles.length + notInterestingProfiles.length) && (
+              <div className="p-2 bg-[#2d2d2d] rounded-lg">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-[#707070]">Não avaliados</span>
+                  <span className="text-sm font-semibold text-[#a0a0a0]">
+                    {allProfiles.length - interestingProfiles.length - notInterestingProfiles.length}
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
