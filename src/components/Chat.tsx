@@ -314,8 +314,12 @@ export function Chat({
                 <Home className="w-5 h-5" />
               </button>
             )}
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#e07a4f] to-[#c96a42] flex items-center justify-center">
-              <Users className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 rounded-lg overflow-hidden">
+              <img
+                src="/logo.png"
+                alt="AtrAI"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div>
               <h1 className="font-semibold text-[#f5f5f5]">
@@ -395,8 +399,12 @@ export function Chat({
           {messages.length === 0 ? (
             /* Welcome Screen */
             <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#e07a4f] to-[#c96a42] flex items-center justify-center mb-6">
-                <Sparkles className="w-8 h-8 text-white" />
+              <div className="w-20 h-20 rounded-2xl overflow-hidden mb-6 shadow-lg shadow-[#6366f1]/20">
+                <img
+                  src="/logo.png"
+                  alt="AtrAI"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <h2 className="text-2xl font-semibold text-[#f5f5f5] mb-2">
                 Olá! Sou seu assistente de recrutamento
@@ -419,7 +427,7 @@ export function Chat({
                     onClick={() => handleSend(suggestion)}
                     className="flex items-start gap-3 p-4 bg-[#2d2d2d] hover:bg-[#3d3d3d] rounded-xl border border-[#3d3d3d] text-left transition-colors"
                   >
-                    <Search className="w-5 h-5 text-[#e07a4f] flex-shrink-0 mt-0.5" />
+                    <Search className="w-5 h-5 text-[#6366f1] flex-shrink-0 mt-0.5" />
                     <span className="text-sm text-[#a0a0a0]">{suggestion}</span>
                   </button>
                 ))}
@@ -441,21 +449,21 @@ export function Chat({
               {/* Loading */}
               {isLoading && (
                 <div className="flex gap-4">
-                  <div className="w-8 h-8 rounded-full bg-[#e07a4f] flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-[#6366f1] flex items-center justify-center">
                     <Bot className="w-4 h-4 text-white" />
                   </div>
                   <div className="flex items-center gap-2 text-[#a0a0a0]">
                     <div className="flex gap-1">
                       <span
-                        className="w-2 h-2 bg-[#e07a4f] rounded-full animate-bounce"
+                        className="w-2 h-2 bg-[#6366f1] rounded-full animate-bounce"
                         style={{ animationDelay: "0ms" }}
                       />
                       <span
-                        className="w-2 h-2 bg-[#e07a4f] rounded-full animate-bounce"
+                        className="w-2 h-2 bg-[#6366f1] rounded-full animate-bounce"
                         style={{ animationDelay: "150ms" }}
                       />
                       <span
-                        className="w-2 h-2 bg-[#e07a4f] rounded-full animate-bounce"
+                        className="w-2 h-2 bg-[#6366f1] rounded-full animate-bounce"
                         style={{ animationDelay: "300ms" }}
                       />
                     </div>
@@ -552,7 +560,7 @@ export function Chat({
                 <button
                   onClick={handleRefineSearch}
                   disabled={isExporting || isExportingToClickUp}
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-[#e07a4f] hover:bg-[#c96a42] text-white rounded-xl font-medium transition-colors disabled:opacity-50"
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-[#6366f1] hover:bg-[#8b5cf6] text-white rounded-xl font-medium transition-colors disabled:opacity-50"
                 >
                   <RefreshCw className="w-5 h-5" />
                   Refinar busca

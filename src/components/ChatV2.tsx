@@ -149,7 +149,11 @@ function CompactProfileCard({
             <ThumbsDown className="w-4 h-4" />
           </button>
           <a
-            href={profile.profile_url.startsWith('http') ? profile.profile_url : `https://${profile.profile_url}`}
+            href={
+              profile.profile_url.startsWith("http")
+                ? profile.profile_url
+                : `https://${profile.profile_url}`
+            }
             target="_blank"
             rel="noopener noreferrer"
             className="p-1.5 rounded-lg text-[#505050] hover:text-[#a0a0a0] hover:bg-[#3d3d3d] transition-colors"
@@ -168,7 +172,9 @@ function CompactProfileCard({
               type="text"
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              placeholder={`Por que esse perfil é ${feedback.interesting ? 'interessante' : 'não interessante'}? (opcional)`}
+              placeholder={`Por que esse perfil é ${
+                feedback.interesting ? "interessante" : "não interessante"
+              }? (opcional)`}
               className="flex-1 bg-[#1a1a1a] border border-[#3d3d3d] rounded-lg px-3 py-1.5 text-sm text-[#f5f5f5] placeholder-[#505050] focus:outline-none focus:border-green-500/50"
               onKeyDown={(e) => e.key === "Enter" && handleReasonSubmit()}
               autoFocus
@@ -423,8 +429,12 @@ export function ChatV2({
                 <Home className="w-5 h-5" />
               </button>
             )}
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#e07a4f] to-[#c96a42] flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 rounded-lg overflow-hidden">
+              <img
+                src="/logo.png"
+                alt="AtrAI"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div>
               <h1 className="font-semibold text-[#f5f5f5] text-sm">AtrAI</h1>
@@ -437,7 +447,7 @@ export function ChatV2({
         {currentJob && (
           <div className="p-4 border-b border-[#2d2d2d]">
             <div className="flex items-center gap-2 mb-2">
-              <Briefcase className="w-4 h-4 text-[#e07a4f]" />
+              <Briefcase className="w-4 h-4 text-[#6366f1]" />
               <span className="text-xs text-[#707070] uppercase tracking-wider">
                 Vaga Ativa
               </span>
@@ -479,17 +489,21 @@ export function ChatV2({
             {/* Total */}
             <div className="p-2 bg-[#252525] rounded-lg">
               <div className="flex items-center justify-between mb-1">
-                <span className="text-xs text-[#a0a0a0]">Total encontrados</span>
+                <span className="text-xs text-[#a0a0a0]">
+                  Total encontrados
+                </span>
                 <span className="text-sm font-semibold text-[#f5f5f5]">
                   {allProfiles.length}
                 </span>
               </div>
             </div>
-            
+
             {/* Atendem à vaga */}
             <div className="p-2 bg-green-500/10 rounded-lg border border-green-500/20">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-green-400/90 font-medium">Atendem à vaga</span>
+                <span className="text-xs text-green-400/90 font-medium">
+                  Atendem à vaga
+                </span>
                 <span className="text-sm font-semibold text-green-400">
                   {interestingProfiles.length}
                 </span>
@@ -497,18 +511,23 @@ export function ChatV2({
               {interestingProfiles.length > 0 && (
                 <div className="space-y-1">
                   {interestingProfiles.map((profile) => (
-                    <div key={profile.profile_id} className="text-[11px] text-green-400/70 truncate">
+                    <div
+                      key={profile.profile_id}
+                      className="text-[11px] text-green-400/70 truncate"
+                    >
                       • {profile.full_name}
                     </div>
                   ))}
                 </div>
               )}
             </div>
-            
+
             {/* Não atendem */}
             <div className="p-2 bg-red-500/10 rounded-lg border border-red-500/20">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-red-400/90 font-medium">Não atendem</span>
+                <span className="text-xs text-red-400/90 font-medium">
+                  Não atendem
+                </span>
                 <span className="text-sm font-semibold text-red-400">
                   {notInterestingProfiles.length}
                 </span>
@@ -516,21 +535,27 @@ export function ChatV2({
               {notInterestingProfiles.length > 0 && (
                 <div className="space-y-1">
                   {notInterestingProfiles.map((profile) => (
-                    <div key={profile.profile_id} className="text-[11px] text-red-400/70 truncate line-through opacity-60">
+                    <div
+                      key={profile.profile_id}
+                      className="text-[11px] text-red-400/70 truncate line-through opacity-60"
+                    >
                       • {profile.full_name}
                     </div>
                   ))}
                 </div>
               )}
             </div>
-            
+
             {/* Não avaliados */}
-            {allProfiles.length > (interestingProfiles.length + notInterestingProfiles.length) && (
+            {allProfiles.length >
+              interestingProfiles.length + notInterestingProfiles.length && (
               <div className="p-2 bg-[#2d2d2d] rounded-lg">
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-[#707070]">Não avaliados</span>
                   <span className="text-sm font-semibold text-[#a0a0a0]">
-                    {allProfiles.length - interestingProfiles.length - notInterestingProfiles.length}
+                    {allProfiles.length -
+                      interestingProfiles.length -
+                      notInterestingProfiles.length}
                   </span>
                 </div>
               </div>
@@ -544,7 +569,7 @@ export function ChatV2({
             <button
               onClick={handleRefineSearch}
               disabled={isLoading}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-[#e07a4f] hover:bg-[#c96a42] text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-[#6366f1] hover:bg-[#8b5cf6] text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
             >
               <RefreshCw className="w-4 h-4" />
               Refinar Busca
@@ -605,8 +630,12 @@ export function ChatV2({
           <div className="max-w-3xl mx-auto space-y-6">
             {messages.length === 0 && !isLoading && (
               <div className="text-center py-20">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#e07a4f] to-[#c96a42] flex items-center justify-center mx-auto mb-4">
-                  <Users className="w-8 h-8 text-white" />
+                <div className="w-20 h-20 rounded-2xl overflow-hidden mx-auto mb-4 shadow-lg shadow-[#6366f1]/20">
+                  <img
+                    src="/logo.png"
+                    alt="AtrAI"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <h2 className="text-xl font-semibold text-[#f5f5f5] mb-2">
                   {currentJob
@@ -626,7 +655,7 @@ export function ChatV2({
                 {/* User message */}
                 {message.role === "user" && (
                   <div className="flex justify-end">
-                    <div className="max-w-[80%] bg-[#e07a4f] text-white rounded-2xl rounded-br-sm px-4 py-3">
+                    <div className="max-w-[80%] bg-[#6366f1] text-white rounded-2xl rounded-br-sm px-4 py-3">
                       <p className="text-sm">{message.content}</p>
                     </div>
                   </div>
@@ -636,7 +665,7 @@ export function ChatV2({
                 {message.role === "assistant" && (
                   <div className="space-y-4">
                     <div className="flex gap-3">
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e07a4f] flex items-center justify-center">
+                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#6366f1] flex items-center justify-center">
                         <Bot className="w-4 h-4 text-white" />
                       </div>
                       <div className="flex-1">
@@ -674,7 +703,7 @@ export function ChatV2({
             {/* Loading */}
             {isLoading && (
               <div className="flex gap-3">
-                <div className="w-8 h-8 rounded-full bg-[#e07a4f] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-[#6366f1] flex items-center justify-center">
                   <Bot className="w-4 h-4 text-white" />
                 </div>
                 <div className="flex items-center gap-2 text-[#707070]">
@@ -711,13 +740,13 @@ export function ChatV2({
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder="Descreva o perfil que está buscando..."
-                className="flex-1 bg-[#252525] border border-[#3d3d3d] rounded-xl px-4 py-3 text-[#f5f5f5] placeholder-[#505050] focus:outline-none focus:border-[#e07a4f] transition-colors"
+                className="flex-1 bg-[#252525] border border-[#3d3d3d] rounded-xl px-4 py-3 text-[#f5f5f5] placeholder-[#505050] focus:outline-none focus:border-[#6366f1] transition-colors"
                 disabled={isLoading}
               />
               <button
                 type="submit"
                 disabled={isLoading || !inputValue.trim()}
-                className="p-3 bg-[#e07a4f] hover:bg-[#c96a42] text-white rounded-xl transition-colors disabled:opacity-50"
+                className="p-3 bg-[#6366f1] hover:bg-[#8b5cf6] text-white rounded-xl transition-colors disabled:opacity-50"
               >
                 <Send className="w-5 h-5" />
               </button>

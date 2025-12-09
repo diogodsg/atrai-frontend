@@ -22,7 +22,7 @@ export function ChatMessage({
       {/* Avatar */}
       <div
         className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-          isUser ? "bg-[#3d3d3d]" : "bg-[#e07a4f]"
+          isUser ? "bg-[#3d3d3d]" : "bg-[#6366f1]"
         }`}
       >
         {isUser ? (
@@ -75,7 +75,7 @@ export function ChatMessage({
               {message.totalProfiles &&
               message.totalProfiles > message.profiles.length ? (
                 <>
-                  <span className="text-[#e07a4f] font-semibold">
+                  <span className="text-[#6366f1] font-semibold">
                     {message.totalProfiles}
                   </span>{" "}
                   candidatos encontrados

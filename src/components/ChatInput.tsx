@@ -56,7 +56,7 @@ export function ChatInput({
         <button
           type="submit"
           disabled={!message.trim() || isLoading}
-          className="flex items-center justify-center w-10 h-10 rounded-xl bg-[#e07a4f] hover:bg-[#c96a42] disabled:bg-[#3d3d3d] disabled:cursor-not-allowed transition-colors"
+          className="flex items-center justify-center w-10 h-10 rounded-xl bg-[#6366f1] hover:bg-[#8b5cf6] disabled:bg-[#3d3d3d] disabled:cursor-not-allowed transition-colors"
         >
           {isLoading ? (
             <Loader2 className="w-5 h-5 text-white animate-spin" />

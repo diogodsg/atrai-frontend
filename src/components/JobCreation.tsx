@@ -52,7 +52,7 @@ export function JobCreation({ onJobCreated, onCancel }: JobCreationProps) {
       id: "welcome",
       role: "assistant",
       content:
-        "Olá! Vou te ajudar a criar uma nova vaga rapidamente. 🎯\n\nVamos lá! Me conta:\n\n1. **Nome da vaga** (ex: Desenvolvedor Backend, Analista de CS)\n2. **Área** (Tecnologia, Produto, Vendas, CS, Marketing, RH, Financeiro...)\n3. **Senioridade** (Junior, Pleno ou Sênior)\n4. **Motivo da abertura** (Substituição, Aumento de time ou Novo projeto)\n5. **Para quem vai reportar**",
+        "Olá! Vou te ajudar a criar uma nova vaga rapidamente. 🎯\n\nVamos lá! Me conta:\n\n1. Nome da vaga (ex: Desenvolvedor Backend, Analista de CS)\n2. Área (Tecnologia, Produto, Vendas, CS, Marketing, RH, Financeiro...)\n3. Senioridade (Junior, Pleno ou Sênior)\n4. Motivo da abertura (Substituição, Aumento de time ou Novo projeto)\n5. Para quem vai reportar",
       timestamp: new Date(),
     },
   ]);
@@ -110,8 +110,12 @@ export function JobCreation({ onJobCreated, onCancel }: JobCreationProps) {
         "encontrar candidatos",
         "iniciar busca",
       ];
-      
-      if (searchTriggers.some((trigger) => content.toLowerCase().includes(trigger))) {
+
+      if (
+        searchTriggers.some((trigger) =>
+          content.toLowerCase().includes(trigger)
+        )
+      ) {
         const finalMessage: Message = {
           id: (Date.now() + 1).toString(),
           role: "assistant",
@@ -155,7 +159,7 @@ export function JobCreation({ onJobCreated, onCancel }: JobCreationProps) {
       setMessages((prev) => [...prev, assistantMessage]);
       setJobData(response.currentJobData);
       setIsComplete(response.isComplete);
-      
+
       // Se a vaga já foi criada, atualiza os dados
       if (isJobCreated && createdJobData) {
         setCreatedJobData({
@@ -218,8 +222,12 @@ export function JobCreation({ onJobCreated, onCancel }: JobCreationProps) {
             >
               <Home className="w-5 h-5" />
             </button>
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#e07a4f] to-[#c96a42] flex items-center justify-center">
-              <Briefcase className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 rounded-lg overflow-hidden">
+              <img
+                src="/logo.png"
+                alt="AtrAI"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div>
               <h1 className="font-semibold text-[#f5f5f5] text-sm">
@@ -236,7 +244,7 @@ export function JobCreation({ onJobCreated, onCancel }: JobCreationProps) {
             <span className="text-xs text-[#707070] uppercase tracking-wider">
               Progresso
             </span>
-            <span className="text-xs text-[#e07a4f] font-medium">
+            <span className="text-xs text-[#6366f1] font-medium">
               {progress.done}/{progress.total}
             </span>
           </div>
@@ -244,7 +252,7 @@ export function JobCreation({ onJobCreated, onCancel }: JobCreationProps) {
           {/* Progress bar */}
           <div className="h-1.5 bg-[#2d2d2d] rounded-full overflow-hidden mb-4">
             <div
-              className="h-full bg-gradient-to-r from-[#e07a4f] to-[#c96a42] transition-all duration-300"
+              className="h-full bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] transition-all duration-300"
               style={{ width: `${(progress.done / progress.total) * 100}%` }}
             />
           </div>
@@ -314,7 +322,7 @@ export function JobCreation({ onJobCreated, onCancel }: JobCreationProps) {
 
           {isCreating && (
             <div className="flex items-center justify-center gap-2 px-4 py-3 bg-[#2d2d2d] rounded-lg">
-              <Loader2 className="w-4 h-4 text-[#e07a4f] animate-spin" />
+              <Loader2 className="w-4 h-4 text-[#6366f1] animate-spin" />
               <span className="text-sm text-[#a0a0a0]">Criando...</span>
             </div>
           )}
@@ -329,7 +337,7 @@ export function JobCreation({ onJobCreated, onCancel }: JobCreationProps) {
                     createdJobData.clickUpUrl
                   );
                 }}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#e07a4f] hover:bg-[#c96a42] text-white rounded-lg text-sm font-medium transition-colors"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#6366f1] hover:bg-[#8b5cf6] text-white rounded-lg text-sm font-medium transition-colors"
               >
                 <ArrowRight className="w-4 h-4" />
                 Buscar Candidatos
@@ -353,7 +361,7 @@ export function JobCreation({ onJobCreated, onCancel }: JobCreationProps) {
                 {message.role === "user" && (
                   <div className="flex justify-end">
                     <div className="flex items-start gap-3 max-w-[80%]">
-                      <div className="bg-[#e07a4f] text-white rounded-2xl rounded-br-sm px-4 py-3">
+                      <div className="bg-[#6366f1] text-white rounded-2xl rounded-br-sm px-4 py-3">
                         <p className="text-sm">{message.content}</p>
                       </div>
                       <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#3d3d3d] flex items-center justify-center">
@@ -366,7 +374,7 @@ export function JobCreation({ onJobCreated, onCancel }: JobCreationProps) {
                 {/* Assistant message */}
                 {message.role === "assistant" && (
                   <div className="flex gap-3">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e07a4f] flex items-center justify-center">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#6366f1] flex items-center justify-center">
                       <Bot className="w-4 h-4 text-white" />
                     </div>
                     <div className="flex-1 max-w-[80%]">
@@ -382,7 +390,7 @@ export function JobCreation({ onJobCreated, onCancel }: JobCreationProps) {
             {/* Loading */}
             {isLoading && (
               <div className="flex gap-3">
-                <div className="w-8 h-8 rounded-full bg-[#e07a4f] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-[#6366f1] flex items-center justify-center">
                   <Bot className="w-4 h-4 text-white" />
                 </div>
                 <div className="flex items-center gap-2 text-[#707070]">
@@ -425,13 +433,13 @@ export function JobCreation({ onJobCreated, onCancel }: JobCreationProps) {
                       ? 'Digite "buscar candidatos" ou faça ajustes na vaga...'
                       : "Responda às perguntas sobre a vaga..."
                   }
-                  className="flex-1 bg-[#252525] border border-[#3d3d3d] rounded-xl px-4 py-3 text-[#f5f5f5] placeholder-[#505050] focus:outline-none focus:border-[#e07a4f] transition-colors"
+                  className="flex-1 bg-[#252525] border border-[#3d3d3d] rounded-xl px-4 py-3 text-[#f5f5f5] placeholder-[#505050] focus:outline-none focus:border-[#6366f1] transition-colors"
                   disabled={isLoading}
                 />
                 <button
                   type="submit"
                   disabled={isLoading || !inputValue.trim()}
-                  className="p-3 bg-[#e07a4f] hover:bg-[#c96a42] text-white rounded-xl transition-colors disabled:opacity-50"
+                  className="p-3 bg-[#6366f1] hover:bg-[#8b5cf6] text-white rounded-xl transition-colors disabled:opacity-50"
                 >
                   <Send className="w-5 h-5" />
                 </button>
