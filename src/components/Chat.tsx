@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import {
   Bot,
-  Sparkles,
-  Users,
   Search,
   RefreshCw,
   ThumbsUp,

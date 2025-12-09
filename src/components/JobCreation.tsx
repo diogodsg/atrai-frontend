@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import {
   Bot,
-  Briefcase,
   User,
   CheckCircle,
   ArrowRight,

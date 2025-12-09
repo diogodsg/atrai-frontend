@@ -12,7 +12,6 @@ import {
   Briefcase,
   Upload,
   Send,
-  Sparkles,
   Check,
   X,
   MapPin,
