@@ -361,7 +361,7 @@ export function ChatV2({
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `candidatos_${
+      a.download = `base_candidatos_${
         currentJob?.title?.replace(/\s+/g, "_") || "busca"
       }_${new Date().toISOString().split("T")[0]}.csv`;
       document.body.appendChild(a);
@@ -600,7 +600,7 @@ export function ChatV2({
             ) : (
               <Download className="w-4 h-4" />
             )}
-            Baixar CSV
+            Baixar Base (até 2k)
           </button>
 
           {exportSuccess && (

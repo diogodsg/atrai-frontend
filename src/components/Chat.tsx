@@ -94,6 +94,7 @@ export function Chat({
 
       // Combina feedback já aplicado com pendente
       const allFeedbackToSend = [...profileFeedback, ...pendingFeedback];
+      
       const response = await sendMessage(
         content,
         conversationHistory,
@@ -263,7 +264,7 @@ export function Chat({
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `candidatos_${new Date().toISOString().split("T")[0]}.csv`;
+      a.download = `base_candidatos_${new Date().toISOString().split("T")[0]}.csv`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
@@ -591,7 +592,7 @@ export function Chat({
                   ) : (
                     <Download className="w-5 h-5" />
                   )}
-                  {isExporting ? "Exportando..." : "CSV"}
+                  {isExporting ? "Exportando..." : "Baixar Base"}
                 </button>
               </div>
 
@@ -623,8 +624,8 @@ export function Chat({
                     a lista da vaga
                   </>
                 )}
-                &nbsp;•&nbsp; 📥 <span className="text-[#a0a0a0]">CSV:</span>{" "}
-                baixa localmente
+                &nbsp;•&nbsp; 📥 <span className="text-[#a0a0a0]">Baixar Base:</span>{" "}
+                exporta TODOS os candidatos do filtro (até 2.000)
               </p>
             </div>
           </div>
